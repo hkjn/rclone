@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -euo pipefail
+
+declare RCLONE_ENDPOINT=${RCLONE_ENDPOINT:-""}
+declare RCLONE_KEY=${RCLONE_KEY:-""}
+declare RCLONE_SECRET=${RCLONE_SECRET:-""}
+if [[ ! "${RCLONE_ENDPOINT}" ]]; then
+	echo "FATAL: Unspecified RCLONE_ENDPOINT." >&2		
+	exit 1
+fi
+if [[ ! "${RCLONE_KEY}" ]]; then
+	echo "FATAL: Unspecified RCLONE_KEY." >&2		
+	exit 1
+fi
+if [[ ! "${RCLONE_SECRET}" ]]; then
+	echo "FATAL: Unspecified RCLONE_SECRET." >&2		
+	exit 1
+fi
+
+mkdir -p ${HOME}/.config/rclone
+cat << EOF > ${HOME}/.config/rclone/rclone.conf
+[spaces]
+type = s3
+env_auth = false
+access_key_id = ${RCLONE_KEY}
+secret_access_key = ${RCLONE_SECRET}
+endpoint = ${RCLONE_ENDPOINT}
+acl = private
+EOF
+
+rclone $@

@@ -1,0 +1,8 @@
+#
+# Sample sync script.
+#
+docker run --rm -it -v $(pwd)/media:/media \
+           -e RCLONE_ENDPOINT=zdo.nyc3.digitaloceanspaces.com \
+           -e RCLONE_KEY=$(cat ${HOME}/src/hkjn.me/hkjninfra/.digitalocean/digitalocean0_spaces_key) \
+           -e RCLONE_SECRET=$(cat ${HOME}/src/hkjn.me/hkjninfra/.digitalocean/digitalocean0_spaces_secret) \
+       hkjn/rclone sync /media spaces:
